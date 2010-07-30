@@ -1,0 +1,28 @@
+Hello,
+
+This repository includes a schematron.xqy module that will allow you to
+perform Schematron validation with MarkLogic Server version 4.2.
+
+To enable Schematron globally:
+
+1. Copy Modules/schematron.xqy into your server's Modules directory
+2. Create Modules/Schematron
+3. Copy the ISO Schematron distribution into Modules/Schematron
+
+To enable Schematron for only a selected application:
+
+1. Copy Modules/schematron.xqy into your application's modules directory
+   or database.
+2. Copy the ISO Schematron distribution into your application's modules
+   directory or database.
+3. Edit schematron.xqy. Change the variable declarations:
+
+   declare variable $include := "/Schematron/iso_dsdl_include.xsl";
+   declare variable $expand  := "/Schematron/iso_abstract_expand.xsl";
+   declare variable $compile := "/Schematron/iso_svrl_for_xslt2.xsl";
+
+   so that they point to the Schematron that you installed under your
+   application.
+
+Docs, etc. to follow. (In the fullness of time, like the next ice age,
+probably. If you have questions, feel free to ask.)
