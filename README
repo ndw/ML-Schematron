@@ -26,3 +26,15 @@ To enable Schematron for only a selected application:
 
 Docs, etc. to follow. (In the fullness of time, like the next ice age,
 probably. If you have questions, feel free to ask.)
+
+You can test your install by running test/default.xqy. If it returns
+"PASS", then you win. Otherwise, well, you don't. Let me know if it's
+not obvious what's gone wrong.
+
+Please note: if your schemas have the .sch file extension, then by
+default MarkLogic will view them as binary files and the stylesheets
+won't work. To fix this problem, either explicitly set the type to XML
+when you load the files, or add a MIME type specification in the
+Mimetypes admin UI asserting that .sch files are application/xml
+before you begin loading them.
+
