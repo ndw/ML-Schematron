@@ -6,6 +6,7 @@ module namespace sch="http://marklogic.com/schematron";
 
 declare namespace s="http://www.ascc.net/xml/schematron";
 declare namespace xsl="http://www.w3.org/1999/XSL/Transform";
+declare namespace svrl="http://purl.oclc.org/dsdl/svrl";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
@@ -41,10 +42,10 @@ declare function sch:validate-document($document, $schema) {
 };
 
 declare function sch:validate-document(
-  $document as document-node(),
+  $document as node(),
   $schema as node(),
   $params as map:map?)
-as document-node()?
+as document-node(element(svrl:schematron-output))?
 {
   let $compiled := sch:compile-schema($schema)
   let $doc
