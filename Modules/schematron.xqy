@@ -10,6 +10,8 @@ declare namespace svrl="http://purl.oclc.org/dsdl/svrl";
 
 declare default function namespace "http://www.w3.org/2005/xpath-functions";
 
+declare option xdmp:mapping "false";
+
 (: Edit these paths if you don't follow the "global" install instructions :)
 declare variable $include := "/Schematron/iso_dsdl_include.xsl";
 declare variable $expand  := "/Schematron/iso_abstract_expand.xsl";
@@ -19,8 +21,9 @@ declare variable $BADSCHEMA := xs:QName("sch:BADSCHEMA");
 declare variable $BADDOC := xs:QName("sch:BADDOC");
 
 declare function sch:compile-schema(
-  $schema as node())
-as document-node(element(xsl:stylesheet))
+  $schema as node(),
+  $params as map:map?
+) as document-node(element(xsl:stylesheet))
 {
   let $sch
     := typeswitch ($schema)
@@ -31,10 +34,10 @@ as document-node(element(xsl:stylesheet))
        default
             return error($BADSCHEMA,
                          "Schematron schema must be a document or element.")
-  let $included := xdmp:xslt-invoke($include, $sch)
-  let $expanded := xdmp:xslt-invoke($expand, $included)
+  let $included := xdmp:xslt-invoke($include, $sch, $params)
+  let $expanded := xdmp:xslt-invoke($expand, $included, $params)
   return
-    xdmp:xslt-invoke($compile, $expanded)
+    xdmp:xslt-invoke($compile, $expanded, $params)
 };
 
 declare function sch:validate-document($document, $schema) {
@@ -47,7 +50,7 @@ declare function sch:validate-document(
   $params as map:map?)
 as document-node(element(svrl:schematron-output))?
 {
-  let $compiled := sch:compile-schema($schema)
+  let $compiled := sch:compile-schema($schema, $params)
   let $doc
     := typeswitch ($document)
        case document-node()
